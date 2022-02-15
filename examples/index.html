@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Alpine.js Cleave</title>
+
+        <script type="module">
+            import Mask from '/dist/module.esm.js'
+
+            document.addEventListener('alpine:initializing', () => {
+                Mask(window.Alpine)
+            })
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine-next/packages/alpinejs/dist/cdn.min.js" defer></script>
+    </head>
+
+    <body>
+        <div x-data>
+            <label for="">
+                Custom Config Object
+            </label>
+
+            <input type="text" x-mask="{ creditCard: true }">
+        </div>
+
+        <div x-data>
+            <p><u>Credit Card</u></p>
+
+            <div>
+                <label>Basic</label>
+
+                <input type="text" x-mask.card>
+            </div>
+        </div>
+
+        <div x-data>
+            <p><u>Date</u></p>
+
+            <div>
+                <label>Basic</label>
+
+                <input type="text" x-mask.date>
+            </div>
+
+            <div>
+                <label>Custom Format (Y/m/d)</label>
+
+                <input type="text" x-mask.date="['Y', 'm', 'd']">
+            </div>
+        </div>
+
+        <div x-data>
+            <p><u>Time</u></p>
+
+            <div>
+                <label>Basic</label>
+
+                <input type="text" x-mask.time>
+            </div>
+
+            <div>
+                <label>Custom Format (h:m)</label>
+
+                <input type="text" x-mask.time="['h', 'm']">
+            </div>
+        </div>
+
+        <div x-data>
+            <p><u>Numeral</u></p>
+
+            <div>
+                <label>Basic</label>
+
+                <input type="text" x-mask.numeral>
+            </div>
+
+            <div>
+                <label>Custom Thousands Group Style</label>
+
+                <input type="text" x-mask.numeral.thousands.none.delimiter.dot.decimal.comma>
+            </div>
+
+            <div>
+                <label>Money</label>
+
+                <input type="text" x-mask.numeral.prefix.$>
+            </div>
+        </div>
+
+        <div x-data>
+            <p><u>Blocks</u></p>
+
+            <div>
+                <label>Basic</label>
+
+                <input type="text" x-mask.blocks="[3, 4, 5]">
+            </div>
+        </div>
+
+        <div>
+            <p><u>Model</u></p>
+
+            <div x-data="{ raw: 2000 }">
+                <label>Broken</label>
+
+                <input type="text" x-mask.numeral x-model="raw">
+            </div>
+
+            <div x-data="{ raw: 2000 }">
+                <label>Basic</label>
+
+                <input type="text" x-mask.numeral x-mask:model="raw" >
+            </div>
+        </div>
+    </body>
+</html>
