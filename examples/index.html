@@ -13,7 +13,7 @@
             })
         </script>
 
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine-next/packages/alpinejs/dist/cdn.min.js" defer></script>
+        <script src="//unpkg.com/alpinejs" defer></script>
     </head>
 
     <body>
@@ -103,15 +103,19 @@
             <p><u>Model</u></p>
 
             <div x-data="{ raw: 2000 }">
-                <label>Broken</label>
+                <label>Modifier</label>
 
                 <input type="text" x-mask.numeral x-model="raw">
+                <span x-text="raw"></span>
+                <button @click="raw=1000">Set from outside</button>
             </div>
 
             <div x-data="{ raw: 2000 }">
-                <label>Basic</label>
+                <label> Custom Config Object</label>
 
-                <input type="text" x-mask.numeral x-mask:model="raw" >
+                <input type="text" x-mask="{numeral: true, numeralThousandsGroupStyle: 'thousand'}" x-model="raw">
+                <span x-text="raw"></span>
+                <button @click="raw=1000">Set from outside</button>
             </div>
         </div>
     </body>

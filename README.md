@@ -146,24 +146,15 @@ If you would like to segment your input and format the data in blocks, you can u
 This would input the following input `333444455555` as `333 4444 55555`.
 
 ## Two-way data binding
-
-Since Cleave.js stores the **formatted** value on the input instead of the raw value, the use of `x-model` could potentially have unintended side-effects.
-
-When you update the value in the input, the raw value will be stored in the data property but Cleave.js won't be able to format the value again since Alpine.js will be setting `input.value` too.
-
-To work around this problem, this packages provide an `x-mask:model` directive that can be used to specify a property on your component, just like `x-model`.
-
 ```html
 <div x-data="{ raw: 2000 }">
-    <input x-mask.numeral x-mask:model="raw" >
+    <input x-mask.numeral x-model="raw" >
 </div>
 ```
 
 When this input is initialised, `raw` will be formatted and the value will be set on the input. Anytime the input is updated, the raw value will be synced back to the `raw` property.
 
 All changes made to the `raw` property outside of Cleave.js (other functions, etc) will also sync back and be formatted.
-
-> **NOTE**: `x-mask:model` **must** be placed after other `x-mask` directives to ensure Cleave.js has been initialised on the element. `x-mask:model` currently **only works** with shorthand `x-mask` directives.
 
 ## Versioning
 
