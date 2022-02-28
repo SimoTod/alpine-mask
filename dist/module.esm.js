@@ -1147,13 +1147,12 @@ var buildConfigFromModifiers = (modifiers, expression, evaluate) => {
   }
   return config;
 };
-var model = null;
-var valueChangedCallback = (evaluate) => {
+var valueChangedCallback = (el) => {
   return (event) => {
-    if (!model) {
+    if (!el._x_model) {
       return;
     }
-    evaluate(`${model} = ${event.target.rawValue}`);
+    el._x_model.set(event.target.rawValue);
   };
 };
 function src_default(Alpine) {
@@ -1162,24 +1161,32 @@ function src_default(Alpine) {
       return el.__cleave;
     }
   });
-  Alpine.directive("mask", (el, {value, modifiers, expression}, {effect, evaluate, evaluateLater}) => {
-    if (value === "model") {
-      model = expression;
-      effect(() => {
-        const value2 = evaluate(expression);
-        if (!el.__cleave) {
-          return;
+  Alpine.directive("mask", (el, {modifiers, expression}, {effect, evaluate}) => {
+    if (el._x_model) {
+      const directive = Alpine.prefixed("model");
+      Object.keys(el._x_attributeCleanups).forEach((key) => {
+        if (key.startsWith(directive)) {
+          el._x_attributeCleanups[directive][0]();
+          delete el._x_attributeCleanups[directive];
         }
-        el.__cleave.setRawValue(value2);
       });
-      return;
+      el._x_forceModelUpdate = () => {
+      };
     }
-    const config = modifiers.length === 0 ? evaluate(expression) : {
+    const config = modifiers.length === 0 ? {
+      ...evaluate(expression),
+      onValueChanged: valueChangedCallback(el)
+    } : {
       ...buildConfigFromModifiers(modifiers, expression, evaluate),
-      onValueChanged: valueChangedCallback(evaluate)
+      onValueChanged: valueChangedCallback(el)
     };
     if (!el.__cleave) {
       el.__cleave = new import_cleave.default(el, config);
+    }
+    if (el._x_model) {
+      effect(() => {
+        Alpine.mutateDom(() => el.__cleave.setRawValue(el._x_model.get()));
+      });
     }
   });
 }
